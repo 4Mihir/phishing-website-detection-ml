@@ -1,41 +1,36 @@
-from pathlib import Path
-import sys
+import argparse
 
-import pandas as pd
-from joblib import load
+try:
+    from src.model_utils import predict_urls
+except ImportError:
+    from model_utils import predict_urls
 
-from features import extract_features
 
-
-def predict_url(url: str) -> None:
-    model_path = Path("models/random_forest.joblib")
-
-    if not model_path.exists():
-        raise FileNotFoundError(
-            f"Trained model not found at {model_path}. "
-            "Run train.py first."
-        )
-
-    model = load(model_path)
-
-    input_df = pd.DataFrame({"url": [url]})
-    X_input = extract_features(input_df)
-
-    prediction = model.predict(X_input)[0]
-    probability = model.predict_proba(X_input)[0][1]
-
-    label = "PHISHING" if prediction == 1 else "LEGITIMATE"
-
+def print_prediction(url: str, label: str, probability: float, risk_level: str) -> None:
     print("\n=== Prediction Result ===")
     print(f"URL: {url}")
     print(f"Prediction: {label}")
     print(f"Phishing Probability: {probability:.4f}")
+    print(f"Risk Level: {risk_level}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Predict whether one or more URLs are phishing or legitimate."
+    )
+    parser.add_argument("urls", nargs="+", help='One or more URLs, e.g. "https://example.com"')
+    args = parser.parse_args()
+
+    predictions_df, _ = predict_urls(args.urls)
+
+    for row in predictions_df.to_dict(orient="records"):
+        print_prediction(
+            url=row["url"],
+            label=row["label"],
+            probability=row["phishing_probability"],
+            risk_level=row["risk_level"],
+        )
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print('Usage: python src/predict.py "https://example.com"')
-        sys.exit(1)
-
-    url = sys.argv[1]
-    predict_url(url)
+    main()

@@ -1,32 +1,18 @@
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 import pandas as pd
-from joblib import load
 
-from features import extract_features
+try:
+    from src.model_utils import REPORTS_DIR, build_training_data, load_model
+except ImportError:
+    from model_utils import REPORTS_DIR, build_training_data, load_model
 
 
 def main() -> None:
-    data_path = Path("data/processed/phishing_binary.csv")
-    model_path = Path("models/random_forest.joblib")
-    output_path = Path("reports/feature_importance.csv")
-    figure_path = Path("reports/feature_importance.png")
+    _, X, _ = build_training_data()
+    model = load_model()
 
-    if not data_path.exists():
-        raise FileNotFoundError(
-            f"Processed dataset not found at {data_path}. Run data_ingest.py first."
-        )
-
-    if not model_path.exists():
-        raise FileNotFoundError(
-            f"Random Forest model not found at {model_path}. Run train.py first."
-        )
-
-    df = pd.read_csv(data_path)
-    X = extract_features(df)
-
-    model = load(model_path)
+    output_path = REPORTS_DIR / "feature_importance.csv"
+    figure_path = REPORTS_DIR / "feature_importance.png"
 
     importance_df = pd.DataFrame(
         {
@@ -35,14 +21,13 @@ def main() -> None:
         }
     ).sort_values(by="importance", ascending=False)
 
-    output_path.parent.mkdir(parents=True, exist_ok=True)
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     importance_df.to_csv(output_path, index=False)
 
     print("Top 10 feature importances:")
     print(importance_df.head(10))
 
-    top_n = 10
-    top_features = importance_df.head(top_n)
+    top_features = importance_df.head(10)
 
     plt.figure(figsize=(10, 6))
     plt.barh(top_features["feature"][::-1], top_features["importance"][::-1])

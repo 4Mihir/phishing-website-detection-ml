@@ -1,17 +1,20 @@
-from pathlib import Path
-
 import matplotlib.pyplot as plt
 import pandas as pd
-from joblib import load
 from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay, confusion_matrix
-from sklearn.model_selection import train_test_split
 
-from features import extract_features
+try:
+    from src.model_utils import (
+        REPORTS_DIR,
+        build_training_data,
+        load_model,
+        split_training_data,
+    )
+except ImportError:
+    from model_utils import REPORTS_DIR, build_training_data, load_model, split_training_data
 
 
-def plot_model_comparison(results_path: Path, output_dir: Path) -> None:
-    results_df = pd.read_csv(results_path)
-    results_df = results_df.sort_values(by="f1_score", ascending=False)
+def plot_model_comparison(results_path, output_dir) -> None:
+    results_df = pd.read_csv(results_path).sort_values(by="f1_score", ascending=False)
 
     plt.figure(figsize=(8, 5))
     plt.bar(results_df["model"], results_df["f1_score"])
@@ -24,7 +27,7 @@ def plot_model_comparison(results_path: Path, output_dir: Path) -> None:
     plt.close()
 
 
-def plot_roc_curve(model, X_test, y_test, output_dir: Path) -> None:
+def plot_roc_curve(model, X_test, y_test, output_dir) -> None:
     plt.figure(figsize=(8, 6))
     RocCurveDisplay.from_estimator(model, X_test, y_test)
     plt.title("ROC Curve - Random Forest")
@@ -33,7 +36,7 @@ def plot_roc_curve(model, X_test, y_test, output_dir: Path) -> None:
     plt.close()
 
 
-def plot_confusion_matrix(model, X_test, y_test, output_dir: Path) -> None:
+def plot_confusion_matrix(model, X_test, y_test, output_dir) -> None:
     y_pred = model.predict(X_test)
     cm = confusion_matrix(y_test, y_pred)
 
@@ -47,35 +50,19 @@ def plot_confusion_matrix(model, X_test, y_test, output_dir: Path) -> None:
 
 
 def main() -> None:
-    data_path = Path("data/processed/phishing_binary.csv")
-    results_path = Path("reports/model_results.csv")
-    model_path = Path("models/random_forest.joblib")
-    output_dir = Path("reports/plots")
-
-    if not data_path.exists():
-        raise FileNotFoundError(f"Processed dataset not found at {data_path}")
+    results_path = REPORTS_DIR / "model_results.csv"
+    output_dir = REPORTS_DIR / "plots"
 
     if not results_path.exists():
-        raise FileNotFoundError(f"Model results file not found at {results_path}")
+        raise FileNotFoundError(
+            f"Model results file not found at {results_path}. Run src/train.py first."
+        )
 
-    if not model_path.exists():
-        raise FileNotFoundError(f"Random Forest model not found at {model_path}")
+    _, X, y = build_training_data()
+    _, X_test, _, y_test = split_training_data(X, y)
+    model = load_model()
 
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    df = pd.read_csv(data_path)
-    X = extract_features(df)
-    y = df["label"]
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.2,
-        random_state=42,
-        stratify=y,
-    )
-
-    model = load(model_path)
 
     plot_model_comparison(results_path, output_dir)
     plot_roc_curve(model, X_test, y_test, output_dir)

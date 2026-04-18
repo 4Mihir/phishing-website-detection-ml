@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import pandas as pd
 from joblib import dump
 from sklearn.ensemble import RandomForestClassifier
@@ -13,10 +11,14 @@ from sklearn.metrics import (
     recall_score,
     roc_auc_score,
 )
-from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeClassifier
 
-from features import extract_features
+try:
+    from src.model_utils import MODELS_DIR, REPORTS_DIR, build_training_data, split_training_data
+except ImportError:
+    from model_utils import MODELS_DIR, REPORTS_DIR, build_training_data, split_training_data
 
 
 def evaluate_model(name, model, X_train, X_test, y_train, y_test):
@@ -30,13 +32,13 @@ def evaluate_model(name, model, X_train, X_test, y_train, y_test):
     y_prob = model.predict_proba(X_test)[:, 1]
 
     accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, zero_division=0)
+    recall = recall_score(y_test, y_pred, zero_division=0)
+    f1 = f1_score(y_test, y_pred, zero_division=0)
     roc_auc = roc_auc_score(y_test, y_prob)
 
     print("\nClassification Report:")
-    print(classification_report(y_test, y_pred, digits=4))
+    print(classification_report(y_test, y_pred, digits=4, zero_division=0))
 
     print("Confusion Matrix:")
     print(confusion_matrix(y_test, y_pred))
@@ -57,41 +59,15 @@ def evaluate_model(name, model, X_train, X_test, y_train, y_test):
     }
 
 
-def main():
-    processed_path = Path("data/processed/phishing_binary.csv")
-
-    if not processed_path.exists():
-        raise FileNotFoundError(
-            f"Processed dataset not found at {processed_path}. "
-            "Run data_ingest.py first."
-        )
-
-    df = pd.read_csv(processed_path)
-
-    print("Loaded processed dataset:", df.shape)
-
-    X = extract_features(df)
-    y = df["label"]
-
-    print("Feature matrix shape:", X.shape)
-    print("Label shape:", y.shape)
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.2,
-        random_state=42,
-        stratify=y,
-    )
-
-    print("\nTrain set shape:", X_train.shape)
-    print("Test set shape:", X_test.shape)
-
-    models = {
-        "Logistic Regression": LogisticRegression(
-            max_iter=1000,
-            class_weight="balanced",
-            random_state=42,
+def build_models():
+    return {
+        "Logistic Regression": make_pipeline(
+            StandardScaler(),
+            LogisticRegression(
+                max_iter=2000,
+                class_weight="balanced",
+                random_state=42,
+            ),
         ),
         "Decision Tree": DecisionTreeClassifier(
             max_depth=10,
@@ -107,25 +83,38 @@ def main():
         ),
     }
 
+
+def main():
+    training_df, X, y = build_training_data()
+
+    print("Prepared training dataset:", training_df.shape)
+    print("Feature matrix shape:", X.shape)
+    print("Label shape:", y.shape)
+    print("Class distribution:")
+    print(y.value_counts().sort_index())
+
+    X_train, X_test, y_train, y_test = split_training_data(X, y)
+
+    print("\nTrain set shape:", X_train.shape)
+    print("Test set shape:", X_test.shape)
+
+    models = build_models()
     results = []
 
-    models_dir = Path("models")
-    models_dir.mkdir(exist_ok=True)
+    MODELS_DIR.mkdir(exist_ok=True)
 
     for name, model in models.items():
-        
         result = evaluate_model(name, model, X_train, X_test, y_train, y_test)
         results.append(result)
 
         safe_name = name.lower().replace(" ", "_")
-        model_path = models_dir / f"{safe_name}.joblib"
+        model_path = MODELS_DIR / f"{safe_name}.joblib"
         dump(model, model_path)
         print(f"Saved model to: {model_path}")
 
-    results_df = pd.DataFrame(results)
-    results_df = results_df.sort_values(by="f1_score", ascending=False)
+    results_df = pd.DataFrame(results).sort_values(by="f1_score", ascending=False)
 
-    results_path = Path("reports/model_results.csv")
+    results_path = REPORTS_DIR / "model_results.csv"
     results_path.parent.mkdir(exist_ok=True, parents=True)
     results_df.to_csv(results_path, index=False)
 

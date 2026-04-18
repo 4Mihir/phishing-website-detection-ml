@@ -5,6 +5,9 @@ import pandas as pd
 import tldextract
 
 
+TLD_EXTRACTOR = tldextract.TLDExtract(suffix_list_urls=None)
+
+
 SUSPICIOUS_KEYWORDS = [
     "login",
     "verify",
@@ -62,6 +65,16 @@ def get_query(url: str) -> str:
     return parsed.query
 
 
+def get_registered_domain(url: str) -> str:
+    hostname = get_hostname(url)
+    extracted = TLD_EXTRACTOR(hostname)
+
+    if not extracted.domain or not extracted.suffix:
+        return ""
+
+    return f"{extracted.domain}.{extracted.suffix}"
+
+
 def get_lexical_url(url: str) -> str:
     """
     Build a consistent lexical representation:
@@ -95,14 +108,22 @@ def contains_suspicious_keyword(url: str) -> int:
     return int(any(keyword in text for keyword in SUSPICIOUS_KEYWORDS))
 
 
+def hostname_matches_domain(hostname: str, domain: str) -> bool:
+    hostname = hostname.lower().strip(".")
+    domain = domain.lower().strip(".")
+    return hostname == domain or hostname.endswith(f".{domain}")
+
+
 def uses_shortening_service(url: str) -> int:
-    text = get_hostname(url).lower()
-    return int(any(service in text for service in SHORTENING_SERVICES))
+    hostname = get_hostname(url).lower()
+    return int(
+        any(hostname_matches_domain(hostname, service) for service in SHORTENING_SERVICES)
+    )
 
 
 def count_subdomains(url: str) -> int:
     hostname = get_hostname(url)
-    extracted = tldextract.extract(hostname)
+    extracted = TLD_EXTRACTOR(hostname)
 
     subdomain = extracted.subdomain.strip().lower()
     if not subdomain:
