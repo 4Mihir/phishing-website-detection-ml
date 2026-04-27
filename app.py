@@ -36,12 +36,16 @@ def inject_styles() -> None:
             --bg-top: #f3ede2;
             --bg-bottom: #dce8ef;
             --panel: rgba(255, 255, 255, 0.88);
+            --panel-solid: #f8faf8;
             --ink: #142433;
             --muted: #4f6473;
             --accent: #0d6f6d;
+            --accent-dark: #0a4f4d;
             --danger: #8a2d2d;
             --safe: #1d6f42;
             --border: rgba(20, 36, 51, 0.12);
+            --control-bg: #121722;
+            --control-text: #ffffff;
         }
 
         html, body, [class*="css"] {
@@ -79,6 +83,38 @@ def inject_styles() -> None:
             margin: 0;
         }
 
+        .stTextInput label, .stTextInput label p {
+            color: var(--ink) !important;
+            font-weight: 700 !important;
+        }
+
+        .stTextInput input {
+            background: var(--control-bg) !important;
+            color: var(--control-text) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        }
+
+        .stTextInput input::placeholder {
+            color: rgba(255, 255, 255, 0.68) !important;
+        }
+
+        .stButton button, .stFormSubmitButton button {
+            background: var(--control-bg) !important;
+            color: var(--control-text) !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            font-weight: 700 !important;
+        }
+
+        .stButton button:hover, .stFormSubmitButton button:hover {
+            background: var(--accent-dark) !important;
+            color: var(--control-text) !important;
+            border-color: rgba(255, 255, 255, 0.34) !important;
+        }
+
+        .stButton button p, .stFormSubmitButton button p {
+            color: var(--control-text) !important;
+        }
+
         .result-badge {
             display: inline-block;
             padding: 0.35rem 0.75rem;
@@ -106,10 +142,27 @@ def inject_styles() -> None:
         }
 
         div[data-testid="stMetric"] {
-            background: rgba(255, 255, 255, 0.55);
+            background: var(--panel-solid);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 0.75rem 0.85rem;
+        }
+
+        div[data-testid="stMetric"] * {
+            color: var(--ink) !important;
+        }
+
+        div[data-testid="stMetricLabel"] p {
+            color: var(--muted) !important;
+            font-weight: 700 !important;
+        }
+
+        div[data-testid="stAlert"] {
+            border: 1px solid var(--border);
+        }
+
+        div[data-testid="stAlert"] * {
+            color: var(--ink) !important;
         }
         </style>
         """,
