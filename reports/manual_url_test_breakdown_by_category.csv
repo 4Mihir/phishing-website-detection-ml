@@ -1,0 +1,3 @@
+category,total,correct,borderline,accuracy
+legitimate,25,21,9,0.84
+suspicious-style,25,25,0,1.0

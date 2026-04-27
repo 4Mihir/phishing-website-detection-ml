@@ -1,0 +1,51 @@
+url,expected_label,category,note,predicted_label,phishing_probability,risk_level,is_correct,is_borderline
+https://www.bbc.co.uk,LEGITIMATE,legitimate,UK news homepage,LEGITIMATE,0.168088,Very Low,True,False
+https://www.google.com,LEGITIMATE,legitimate,Global search homepage,LEGITIMATE,0.3669,Low,True,False
+https://github.com,LEGITIMATE,legitimate,Developer platform homepage,LEGITIMATE,0.3669,Low,True,False
+https://www.microsoft.com,LEGITIMATE,legitimate,Global technology homepage,LEGITIMATE,0.410669,Low,True,True
+https://www.gov.uk,LEGITIMATE,legitimate,UK government homepage,LEGITIMATE,0.101663,Very Low,True,False
+https://www.wikipedia.org,LEGITIMATE,legitimate,Reference website homepage,LEGITIMATE,0.410669,Low,True,True
+https://www.openai.com,LEGITIMATE,legitimate,Technology company homepage,LEGITIMATE,0.3669,Low,True,False
+https://www.amazon.com,LEGITIMATE,legitimate,E-commerce homepage,LEGITIMATE,0.3669,Low,True,False
+https://www.amazon.co.uk,LEGITIMATE,legitimate,UK e-commerce homepage,PHISHING,0.520939,Elevated,False,True
+https://www.ebay.co.uk,LEGITIMATE,legitimate,UK marketplace homepage,LEGITIMATE,0.227175,Low,True,False
+https://www.hsbc.co.uk,LEGITIMATE,legitimate,UK banking homepage,LEGITIMATE,0.227175,Low,True,False
+https://www.nhs.uk,LEGITIMATE,legitimate,UK health service homepage,LEGITIMATE,0.101663,Very Low,True,False
+https://www.apple.com,LEGITIMATE,legitimate,Technology company homepage,LEGITIMATE,0.326439,Low,True,False
+https://www.linkedin.com,LEGITIMATE,legitimate,Professional network homepage,LEGITIMATE,0.410449,Low,True,True
+https://www.un.org,LEGITIMATE,legitimate,International organisation homepage,LEGITIMATE,0.101663,Very Low,True,False
+http://secure-login-paypal-account.com,PHISHING,suspicious-style,Brand impersonation style URL,PHISHING,0.888935,High,True,False
+http://verify-bank-account-login.com,PHISHING,suspicious-style,Credential harvesting style URL,PHISHING,0.902018,High,True,False
+http://update-your-microsoft-security.info,PHISHING,suspicious-style,Security scare style URL,PHISHING,0.911358,High,True,False
+http://apple-id-verification-center.net,PHISHING,suspicious-style,Apple account impersonation style URL,PHISHING,0.732626,Elevated,True,False
+http://secure-amazon-billing-check.com,PHISHING,suspicious-style,Amazon billing scare style URL,PHISHING,0.888935,High,True,False
+http://banking-support-login-alert.com,PHISHING,suspicious-style,Banking support scare style URL,PHISHING,0.888935,High,True,False
+http://signin-office365-security-check.net,PHISHING,suspicious-style,Office 365 impersonation style URL,PHISHING,0.885995,High,True,False
+http://confirm-your-delivery-address-now.com,PHISHING,suspicious-style,Delivery luring style URL,PHISHING,0.733218,Elevated,True,False
+http://paypal-auth-user-check.com,PHISHING,suspicious-style,PayPal impersonation style URL,PHISHING,0.884419,High,True,False
+http://reset-your-password-immediately-login.com,PHISHING,suspicious-style,Password reset scare style URL,PHISHING,0.897772,High,True,False
+http://account-review-secure-verification.net,PHISHING,suspicious-style,Generic account verification lure,PHISHING,0.910562,High,True,False
+http://update-billing-information-secure-check.com,PHISHING,suspicious-style,Billing update lure,PHISHING,0.905916,High,True,False
+http://secure-dropbox-file-share-login.net,PHISHING,suspicious-style,Cloud sharing impersonation style URL,PHISHING,0.811066,High,True,False
+http://validate-your-tax-refund-now.com,PHISHING,suspicious-style,Tax refund lure,PHISHING,0.621209,Elevated,True,False
+http://customer-service-identity-confirmation.net,PHISHING,suspicious-style,Identity confirmation lure,PHISHING,0.777208,Elevated,True,False
+https://www.youtube.com,LEGITIMATE,legitimate,Video platform homepage,LEGITIMATE,0.409075,Low,True,True
+https://www.stackoverflow.com,LEGITIMATE,legitimate,Developer Q&A homepage,LEGITIMATE,0.405836,Low,True,True
+https://www.theguardian.com,LEGITIMATE,legitimate,News website homepage,LEGITIMATE,0.411657,Low,True,True
+https://www.oracle.com,LEGITIMATE,legitimate,Enterprise technology homepage,LEGITIMATE,0.3669,Low,True,False
+https://www.ibm.com,LEGITIMATE,legitimate,Technology company homepage,LEGITIMATE,0.129529,Very Low,True,False
+https://www.paypal.com,LEGITIMATE,legitimate,Payment platform homepage,PHISHING,0.646481,Elevated,False,False
+https://www.barclays.co.uk,LEGITIMATE,legitimate,UK banking homepage,PHISHING,0.648775,Elevated,False,False
+https://www.cloudflare.com,LEGITIMATE,legitimate,Infrastructure platform homepage,LEGITIMATE,0.410841,Low,True,True
+https://en.wikipedia.org/wiki/Phishing,LEGITIMATE,legitimate,Reference article deep link,PHISHING,0.665912,Elevated,False,False
+https://www.britishairways.com,LEGITIMATE,legitimate,Airline homepage,LEGITIMATE,0.40566,Low,True,True
+http://paypal-resolution-center-login.net,PHISHING,suspicious-style,PayPal resolution centre lure,PHISHING,0.902654,High,True,False
+http://drive-google-shared-document-login.com,PHISHING,suspicious-style,Google Drive sharing lure,PHISHING,0.856907,High,True,False
+http://apple-security-billing-update.com,PHISHING,suspicious-style,Apple billing scare style URL,PHISHING,0.907264,High,True,False
+http://bank-secure-message-center-alert.net,PHISHING,suspicious-style,Bank message centre lure,PHISHING,0.8205,High,True,False
+http://hmrc-tax-refund-verification.com,PHISHING,suspicious-style,HMRC refund lure,PHISHING,0.732626,Elevated,True,False
+http://onedrive-shared-file-login-security.net,PHISHING,suspicious-style,OneDrive impersonation lure,PHISHING,0.849927,High,True,False
+http://netflix-payment-update-secure-check.com,PHISHING,suspicious-style,Netflix billing lure,PHISHING,0.849927,High,True,False
+http://icloud-account-security-review.net,PHISHING,suspicious-style,iCloud security review lure,PHISHING,0.902654,High,True,False
+http://royalmail-delivery-fee-confirmation.com,PHISHING,suspicious-style,Royal Mail delivery fee lure,PHISHING,0.708715,Elevated,True,False
+http://dropbox-file-access-verification.net,PHISHING,suspicious-style,Dropbox access lure,PHISHING,0.74767,Elevated,True,False

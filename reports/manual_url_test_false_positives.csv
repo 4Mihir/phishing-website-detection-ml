@@ -1,0 +1,5 @@
+url,expected_label,category,note,predicted_label,phishing_probability,risk_level,is_correct,is_borderline
+https://www.amazon.co.uk,LEGITIMATE,legitimate,UK e-commerce homepage,PHISHING,0.520939,Elevated,False,True
+https://www.paypal.com,LEGITIMATE,legitimate,Payment platform homepage,PHISHING,0.646481,Elevated,False,False
+https://www.barclays.co.uk,LEGITIMATE,legitimate,UK banking homepage,PHISHING,0.648775,Elevated,False,False
+https://en.wikipedia.org/wiki/Phishing,LEGITIMATE,legitimate,Reference article deep link,PHISHING,0.665912,Elevated,False,False

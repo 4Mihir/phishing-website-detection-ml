@@ -1,0 +1,10 @@
+url,expected_label,category,note,predicted_label,phishing_probability,risk_level,is_correct,is_borderline
+https://www.microsoft.com,LEGITIMATE,legitimate,Global technology homepage,LEGITIMATE,0.410669,Low,True,True
+https://www.wikipedia.org,LEGITIMATE,legitimate,Reference website homepage,LEGITIMATE,0.410669,Low,True,True
+https://www.amazon.co.uk,LEGITIMATE,legitimate,UK e-commerce homepage,PHISHING,0.520939,Elevated,False,True
+https://www.linkedin.com,LEGITIMATE,legitimate,Professional network homepage,LEGITIMATE,0.410449,Low,True,True
+https://www.youtube.com,LEGITIMATE,legitimate,Video platform homepage,LEGITIMATE,0.409075,Low,True,True
+https://www.stackoverflow.com,LEGITIMATE,legitimate,Developer Q&A homepage,LEGITIMATE,0.405836,Low,True,True
+https://www.theguardian.com,LEGITIMATE,legitimate,News website homepage,LEGITIMATE,0.411657,Low,True,True
+https://www.cloudflare.com,LEGITIMATE,legitimate,Infrastructure platform homepage,LEGITIMATE,0.410841,Low,True,True
+https://www.britishairways.com,LEGITIMATE,legitimate,Airline homepage,LEGITIMATE,0.40566,Low,True,True

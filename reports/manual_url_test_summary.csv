@@ -1,0 +1,7 @@
+metric,value
+total_urls,50.0
+correct_predictions,46.0
+manual_accuracy,0.92
+borderline_predictions,9.0
+false_positives,4.0
+false_negatives,0.0

@@ -58,6 +58,15 @@ python src/predict.py "https://www.bbc.co.uk"
 python src/predict.py "https://www.google.com" "https://github.com"
 ```
 
+You can also run the curated manual benchmark:
+
+```powershell
+python src/manual_url_test.py
+```
+
+This benchmark uses a curated 50-URL test set containing both legitimate and phishing-style examples.
+It also generates summary CSV files, a benchmark overview chart, and report-ready notes in `reports/`.
+
 5. Launch the Streamlit application:
 
 ```powershell
